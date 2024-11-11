@@ -6,6 +6,7 @@ import { initializeApp } from "firebase/app";
 import LoginScreen from "./Screens/LoginScreen";
 import HomeScreen from "./Screens/HomeScreen";
 import { Ionicons } from "@expo/vector-icons";
+import MovieDetailScreen from "./Screens/MovieDetailScreen";
 
 // Firebase configuration
 const firebaseConfig = {
@@ -84,6 +85,11 @@ export default function App() {
           name="MainApp"
           component={TabNavigator}
           options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="MovieDetail"
+          component={MovieDetailScreen}
+          options={{ title: "Movie Details" }}
         />
       </Stack.Navigator>
     </NavigationContainer>
