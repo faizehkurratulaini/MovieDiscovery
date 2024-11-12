@@ -2,6 +2,11 @@
   "expo": {
     "name": "MovieDiscovery",
     "slug": "MovieDiscovery",
-    "version": "1.0.0"
+    "version": "1.0.0",
+    "extra": {
+      "eas": {
+        "projectId": "16a95dbb-0df6-4af0-a6ad-5f594569e463"
+      }
+    }
   }
 }

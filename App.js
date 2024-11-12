@@ -9,6 +9,7 @@ import MovieDetailScreen from "./Screens/MovieDetailScreen";
 import SearchScreen from "./Screens/SearchScreen";
 import FavoritScreen from "./Screens/FavoritScreen";
 import ProfileScreen from "./Screens/ProfileScreen";
+import RegisterScreen from "./Screens/RegisterScreen";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -67,6 +68,11 @@ export default function App() {
         <Stack.Screen
           name="Login"
           component={LoginScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Register"
+          component={RegisterScreen}
           options={{ headerShown: false }}
         />
         <Stack.Screen
