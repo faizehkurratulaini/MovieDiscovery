@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -9,27 +9,80 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { getAuth } from "firebase/auth";
-import { getFirestore, doc, setDoc, deleteDoc } from "firebase/firestore";
+import {
+  getFirestore,
+  doc,
+  setDoc,
+  deleteDoc,
+  getDoc,
+} from "firebase/firestore";
 
 export default function MovieDetailScreen({ route }) {
   const { movie } = route.params;
   const [isFavorite, setIsFavorite] = useState(false);
 
+  useEffect(() => {
+    checkIfFavorite(movie.id).then((result) => setIsFavorite(result));
+  }, []);
+
   const toggleFavorite = async () => {
     const auth = getAuth();
     const db = getFirestore();
     const userId = auth.currentUser.uid;
-    const movieRef = doc(db, `users/${userId}/favorites/${movie.id}`);
+    const movieRef = doc(
+      db,
+      "favorites",
+      userId,
+      "movies",
+      movie.id.toString()
+    );
 
     try {
       if (isFavorite) {
         await deleteDoc(movieRef);
+        console.log("movieRef:", movieRef);
       } else {
-        await setDoc(movieRef, movie);
+        await setDoc(movieRef, {
+          // movieId: movie.id,
+          title: movie.title,
+          userId: userId,
+          movie: movie,
+        });
       }
       setIsFavorite(!isFavorite);
     } catch (error) {
       console.error("Error toggling favorite:", error);
+    }
+  };
+
+  const checkIfFavorite = async (movieId) => {
+    // Ensure authentication
+    const auth = getAuth();
+    if (!auth.currentUser) {
+      return false; // Not logged in, can't be a favorite
+    }
+
+    const db = getFirestore();
+    const userId = auth.currentUser.uid;
+
+    try {
+      // Construct the document reference for the specific movie
+      const movieRef = doc(
+        db,
+        "favorites",
+        userId,
+        "movies",
+        movieId.toString()
+      );
+
+      // Try to get the document
+      const docSnap = await getDoc(movieRef);
+
+      // Return true if document exists, false otherwise
+      return docSnap.exists();
+    } catch (error) {
+      console.error("Error checking favorite status:", error);
+      return false;
     }
   };
 
