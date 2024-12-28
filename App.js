@@ -33,30 +33,23 @@ function TabNavigator() {
 
           return <Ionicons name={iconName} size={size} color={color} />;
         },
-        tabBarActiveTintColor: "#0782F9",
-        tabBarInactiveTintColor: "gray",
+        tabBarStyle: {
+          backgroundColor: "#1E1E1E",
+          borderTopWidth: 0,
+          elevation: 0,
+          height: 60,
+        },
+        tabBarActiveTintColor: "#E50914", // Netflix red for active
+        tabBarInactiveTintColor: "#666", // Muted gray for inactive
+        tabBarShowLabel: false, // Hide text labels
+        headerShown: false,
+        tabBarHideOnKeyboard: true, // Hide tab bar when keyboard is open
       })}
     >
-      <Tab.Screen
-        name="Home"
-        component={HomeScreen}
-        options={{ headerShown: false }}
-      />
-      <Tab.Screen
-        name="Search"
-        component={SearchScreen}
-        options={{ headerShown: false }}
-      />
-      <Tab.Screen
-        name="Favorites"
-        component={FavoritScreen}
-        options={{ headerShown: false }}
-      />
-      <Tab.Screen
-        name="Profile"
-        component={ProfileScreen}
-        options={{ headerShown: false }}
-      />
+      <Tab.Screen name="Home" component={HomeScreen} />
+      <Tab.Screen name="Search" component={SearchScreen} />
+      <Tab.Screen name="Favorites" component={FavoritScreen} />
+      <Tab.Screen name="Profile" component={ProfileScreen} />
     </Tab.Navigator>
   );
 }
@@ -64,7 +57,12 @@ function TabNavigator() {
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Login">
+      <Stack.Navigator
+        initialRouteName="Login"
+        screenOptions={{
+          contentStyle: { backgroundColor: "#121212" }, // Dark background for all screens
+        }}
+      >
         <Stack.Screen
           name="Login"
           component={LoginScreen}
@@ -83,7 +81,16 @@ export default function App() {
         <Stack.Screen
           name="MovieDetail"
           component={MovieDetailScreen}
-          options={{ title: "Movie Details" }}
+          options={{
+            title: "Movie Details",
+            headerStyle: {
+              backgroundColor: "#1E1E1E",
+            },
+            headerTintColor: "#fff",
+            headerTitleStyle: {
+              fontWeight: "bold",
+            },
+          }}
         />
       </Stack.Navigator>
     </NavigationContainer>

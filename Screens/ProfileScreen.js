@@ -1,6 +1,7 @@
 // screens/ProfileScreen.js
 import React from "react";
 import { StyleSheet, View, Text, TouchableOpacity, Alert } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 import { signOut } from "firebase/auth";
 import { auth, db } from "../config/firebase";
 
@@ -29,23 +30,42 @@ export default function ProfileScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.emailText}>{auth.currentUser?.email}</Text>
+      <View style={styles.profileHeader}>
+        <View style={styles.avatarContainer}>
+          <Ionicons name="person-circle" size={100} color="#666" />
+        </View>
+        <Text style={styles.emailText}>{auth.currentUser?.email}</Text>
+      </View>
 
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => navigation.navigate("Favorites")}
-      >
-        <Text style={styles.buttonText}>My Favorites</Text>
-      </TouchableOpacity>
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => navigation.navigate("Favorites")}
+        >
+          <Ionicons
+            name="heart"
+            size={20}
+            color="white"
+            style={styles.buttonIcon}
+          />
+          <Text style={styles.buttonText}>My Favorites</Text>
+        </TouchableOpacity>
 
-      <TouchableOpacity
-        style={[styles.button, styles.signOutButton]}
-        onPress={handleSignOut}
-      >
-        <Text style={[styles.buttonText, styles.signOutButtonText]}>
-          Sign Out
-        </Text>
-      </TouchableOpacity>
+        <TouchableOpacity
+          style={[styles.button, styles.signOutButton]}
+          onPress={handleSignOut}
+        >
+          <Ionicons
+            name="log-out"
+            size={20}
+            color="#E50914"
+            style={styles.buttonIcon}
+          />
+          <Text style={[styles.buttonText, styles.signOutButtonText]}>
+            Sign Out
+          </Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }
@@ -53,35 +73,55 @@ export default function ProfileScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: "#121212",
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#f5f5f5",
     padding: 20,
+  },
+  profileHeader: {
+    alignItems: "center",
+    marginBottom: 40,
+  },
+  avatarContainer: {
+    backgroundColor: "#1E1E1E",
+    borderRadius: 75,
+    marginBottom: 20,
   },
   emailText: {
     fontSize: 18,
-    marginBottom: 30,
+    color: "white",
+    marginTop: 10,
+  },
+  buttonContainer: {
+    width: "100%",
+    paddingHorizontal: 20,
   },
   button: {
-    backgroundColor: "#0782F9",
+    backgroundColor: "#E50914",
     width: "100%",
     padding: 15,
     borderRadius: 10,
+    flexDirection: "row",
     alignItems: "center",
-    marginBottom: 10,
+    justifyContent: "center",
+    marginBottom: 15,
   },
   buttonText: {
     color: "white",
     fontWeight: "bold",
     fontSize: 16,
+    marginLeft: 10,
+  },
+  buttonIcon: {
+    marginRight: 10,
   },
   signOutButton: {
-    backgroundColor: "white",
-    borderColor: "#ff0000",
+    backgroundColor: "transparent",
+    borderColor: "#E50914",
     borderWidth: 2,
-    marginTop: 20,
+    marginTop: 10,
   },
   signOutButtonText: {
-    color: "#ff0000",
+    color: "#E50914",
   },
 });

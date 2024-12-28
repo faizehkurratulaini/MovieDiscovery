@@ -1,4 +1,3 @@
-// screens/LoginScreen.js
 import React, { useState } from "react";
 import {
   StyleSheet,
@@ -10,6 +9,7 @@ import {
   Platform,
   ActivityIndicator,
 } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../config/firebase";
 
@@ -17,6 +17,7 @@ export default function LoginScreen({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleLogin = async () => {
     if (!email || !password) {
@@ -60,27 +61,55 @@ export default function LoginScreen({ navigation }) {
       <View style={styles.form}>
         <View style={styles.inputWrapper}>
           <Text style={styles.inputLabel}>Email Address</Text>
-          <TextInput
-            placeholder="Enter your email"
-            value={email}
-            onChangeText={setEmail}
-            style={styles.input}
-            autoCapitalize="none"
-            keyboardType="email-address"
-            editable={!loading}
-          />
+          <View style={styles.inputContainer}>
+            <Ionicons
+              name="mail"
+              size={20}
+              color="#888"
+              style={styles.inputIcon}
+            />
+            <TextInput
+              placeholder="Enter your email"
+              placeholderTextColor="#666"
+              value={email}
+              onChangeText={setEmail}
+              style={styles.input}
+              autoCapitalize="none"
+              keyboardType="email-address"
+              editable={!loading}
+            />
+          </View>
         </View>
 
         <View style={styles.inputWrapper}>
           <Text style={styles.inputLabel}>Password</Text>
-          <TextInput
-            placeholder="Enter your password"
-            value={password}
-            onChangeText={setPassword}
-            style={styles.input}
-            secureTextEntry
-            editable={!loading}
-          />
+          <View style={styles.inputContainer}>
+            <Ionicons
+              name="lock-closed"
+              size={20}
+              color="#888"
+              style={styles.inputIcon}
+            />
+            <TextInput
+              placeholder="Enter your password"
+              placeholderTextColor="#666"
+              value={password}
+              onChangeText={setPassword}
+              style={styles.input}
+              secureTextEntry={!showPassword}
+              editable={!loading}
+            />
+            <TouchableOpacity
+              onPress={() => setShowPassword(!showPassword)}
+              style={styles.passwordToggle}
+            >
+              <Ionicons
+                name={showPassword ? "eye-off" : "eye"}
+                size={20}
+                color="#888"
+              />
+            </TouchableOpacity>
+          </View>
         </View>
 
         <TouchableOpacity
@@ -101,7 +130,8 @@ export default function LoginScreen({ navigation }) {
           disabled={loading}
         >
           <Text style={styles.registerLinkText}>
-            Don't have an account? Register
+            Don't have an account?{" "}
+            <Text style={styles.registerLinkHighlight}>Register</Text>
           </Text>
         </TouchableOpacity>
       </View>
@@ -113,7 +143,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
-    backgroundColor: "#f5f5f5",
+    backgroundColor: "#121212",
     padding: 20,
   },
   header: {
@@ -123,12 +153,12 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 28,
     fontWeight: "bold",
-    color: "#0782F9",
+    color: "#E50914", // Netflix red
     marginBottom: 10,
   },
   subtitle: {
     fontSize: 18,
-    color: "#666",
+    color: "#888",
   },
   form: {
     width: "100%",
@@ -139,27 +169,39 @@ const styles = StyleSheet.create({
   inputLabel: {
     fontSize: 14,
     fontWeight: "600",
-    color: "#333",
+    color: "white",
     marginBottom: 5,
   },
-  input: {
-    backgroundColor: "white",
-    paddingHorizontal: 15,
-    paddingVertical: 12,
+  inputContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#1E1E1E",
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: "#ddd",
+    borderColor: "#333",
+  },
+  inputIcon: {
+    paddingLeft: 15,
+  },
+  input: {
+    flex: 1,
+    color: "white",
+    paddingHorizontal: 15,
+    paddingVertical: 12,
     fontSize: 16,
   },
+  passwordToggle: {
+    paddingRight: 15,
+  },
   button: {
-    backgroundColor: "#0782F9",
+    backgroundColor: "#E50914", // Netflix red
     padding: 15,
     borderRadius: 10,
     alignItems: "center",
     marginTop: 20,
   },
   buttonDisabled: {
-    backgroundColor: "#7fb5e6",
+    backgroundColor: "rgba(229, 9, 20, 0.5)", // Disabled red
   },
   buttonText: {
     color: "white",
@@ -171,8 +213,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   registerLinkText: {
-    color: "#0782F9",
+    color: "#888",
     fontSize: 14,
     fontWeight: "600",
+  },
+  registerLinkHighlight: {
+    color: "#E50914",
+    fontWeight: "bold",
   },
 });
